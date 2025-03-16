@@ -44,10 +44,16 @@ let sendData = async (data)=>{
             },
             body: JSON.stringify(data)
       });
-      let userLogin = await respuesta.json();
-      //console.log(userLogin);
-      alert(`Bienvenido: ${userLogin.nombre}`);
-      location.href = "/frontend-apicrud/index.html";
+      if(respuesta.status === 401){
+        alert("El usuario y/o contraseña son incorrectas")
+      }else{
+        let userLogin = await respuesta.json();
+        alert(`Bienvenido: ${userLogin.nombre}`);
+        //guardar datos en localStorage
+        localStorage.setItem("userLogin",JSON.stringify(userLogin));
+        location.href = "/frontend-apicrud/index.html";
+      }
+    
     }catch(error){
         console.log(error);
     }
